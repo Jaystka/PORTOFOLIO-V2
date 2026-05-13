@@ -25,10 +25,9 @@ function renderIcon(
   if (!iconName) return null;
 
   const normalizedName = iconName.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
-  const matchedEntry = Object.entries(LucideIcons).find(([name, icon]) => {
-    if (typeof icon !== "function") return false;
-    return name.toLowerCase() === normalizedName;
-  });
+  const matchedEntry = Object.entries(LucideIcons).find(
+    ([name]) => name.toLowerCase() === normalizedName,
+  );
 
   if (!matchedEntry) return null;
   return createElement(matchedEntry[1] as ElementType, props);
