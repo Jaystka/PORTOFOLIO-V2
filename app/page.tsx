@@ -1,19 +1,11 @@
 "use client";
 
-import { createElement, useEffect, useState } from "react";
+import { createElement, useEffect, useState, type ElementType } from "react";
+import * as LucideIcons from "lucide-react";
 import {
   ArrowRight,
-  Github,
-  ExternalLink,
   Code2,
-  Database,
-  Layout,
-  Server,
-  GraduationCap,
-  Award,
-  Linkedin,
-  Instagram,
-  Bookmark,
+  ExternalLink,
   Share2,
   X,
 } from "lucide-react";
@@ -26,17 +18,20 @@ import { useTheme } from "next-themes";
 import { client, isSanityConfigured, urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 
-// Map Ikon Lucide untuk digunakan secara dinamis
-const IconMap: any = {
-  Code2, Database, Layout, Server, GraduationCap, Award, Linkedin, Instagram, Bookmark, Share2, X
-};
-
 function renderIcon(
   iconName: string | undefined,
   props: Record<string, unknown>,
 ) {
-  if (!iconName || !IconMap[iconName]) return null;
-  return createElement(IconMap[iconName], props);
+  if (!iconName) return null;
+
+  const normalizedName = iconName.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+  const matchedEntry = Object.entries(LucideIcons).find(([name, icon]) => {
+    if (typeof icon !== "function") return false;
+    return name.toLowerCase() === normalizedName;
+  });
+
+  if (!matchedEntry) return null;
+  return createElement(matchedEntry[1] as ElementType, props);
 }
 
 export default function Portfolio() {
