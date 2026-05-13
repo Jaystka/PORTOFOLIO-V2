@@ -1,5 +1,19 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Sanity Setup
+
+1. Buat file `.env.local` dari `.env.example`.
+2. Isi `NEXT_PUBLIC_SANITY_PROJECT_ID` dan `NEXT_PUBLIC_SANITY_DATASET` sesuai project Sanity kamu.
+3. Jalankan aplikasi dengan `npm run dev`.
+4. Buka Studio di `http://localhost:3000/studio`.
+5. Buat/publish dokumen: `heroSlide`, `project`, `experience`, `skill`, `socialLink`, `language`.
+
+Jika env Sanity belum diisi, halaman akan menampilkan pesan konfigurasi Sanity belum lengkap.
+
+### Command tambahan
+
+- `npm run sanity` untuk akses CLI Sanity (import/export, dataset, dsb).
+
 ## Getting Started
 
 First, run the development server:
