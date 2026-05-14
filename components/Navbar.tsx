@@ -5,7 +5,17 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 
-export function Navbar() {
+type NavItem = {
+  name: string;
+  sectionId: string;
+};
+
+type NavbarProps = {
+  navLinks?: NavItem[];
+  brandText?: string;
+};
+
+export function Navbar({ navLinks, brandText }: NavbarProps) {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,12 +42,19 @@ export function Navbar() {
 
   if (!mounted) return null;
 
-  const navLinks = [
+  const defaultNavLinks = [
     { name: "Home", href: "hero" },
     { name: "Experience", href: "experience" },
     { name: "Projects", href: "projects" },
     { name: "Skills", href: "skills" },
   ];
+  const resolvedNavLinks =
+    Array.isArray(navLinks) && navLinks.length > 0
+      ? navLinks
+          .filter((item) => item?.name && item?.sectionId)
+          .map((item) => ({ name: item.name, href: item.sectionId }))
+      : defaultNavLinks;
+  const resolvedBrandText = brandText?.trim() || "JAYS.";
 
   return (
     <nav
@@ -52,12 +69,12 @@ export function Navbar() {
           href="/"
           className="text-xl font-bold tracking-tighter text-stone-900 dark:text-stone-100"
         >
-          JAYS<span className="text-amber-500">.</span>
+          {resolvedBrandText}
         </Link>
 
         {/* DESKTOP */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {resolvedNavLinks.map((link) => (
             <a
               key={link.name}
               href={`#${link.href}`}
@@ -103,7 +120,7 @@ export function Navbar() {
 
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-stone-50 dark:bg-[#0c0a09] border-b border-stone-200 dark:border-stone-800 p-6 flex flex-col gap-4 shadow-xl">
-          {navLinks.map((link) => (
+          {resolvedNavLinks.map((link) => (
             <a
               key={link.name}
               href={`#${link.href}`}

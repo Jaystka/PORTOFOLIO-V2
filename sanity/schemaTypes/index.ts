@@ -4,6 +4,7 @@ import { languageType } from "./documents/languageType";
 import { projectType } from "./documents/projectType";
 import { skillType } from "./documents/skillType";
 import { socialLinkType } from "./documents/socialLinkType";
+import { siteSettingsType } from "./documents/siteSettingsType";
 
 export const schemaTypes = [
   projectType,
@@ -12,4 +13,5 @@ export const schemaTypes = [
   skillType,
   socialLinkType,
   languageType,
+  siteSettingsType,
 ];

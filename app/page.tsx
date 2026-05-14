@@ -57,7 +57,8 @@ export default function Portfolio() {
         "skills": *[_type == "skill"],
         "experiences": *[_type == "experience"] | order(period desc),
         "socialLinks": *[_type == "socialLink"],
-        "languages": *[_type == "language"]
+        "languages": *[_type == "language"],
+        "siteSettings": *[_type == "siteSettings"][0]
       }`;
 
       try {
@@ -98,6 +99,11 @@ export default function Portfolio() {
   const projects = Array.isArray(data.projects) ? data.projects : [];
   const skills = Array.isArray(data.skills) ? data.skills : [];
   const languages = Array.isArray(data.languages) ? data.languages : [];
+  const siteSettings = data.siteSettings ?? {};
+  const navbarItems = Array.isArray(siteSettings.navbarItems)
+    ? siteSettings.navbarItems
+    : [];
+  const contactButton = siteSettings.contactButton ?? {};
   const activeSlide = heroSlides[currentSlideIndex] ?? heroSlides[0] ?? null;
 
   const heroImage =
@@ -109,7 +115,7 @@ export default function Portfolio() {
       {/* 1. BACKGROUND COMPONENT */}
       <SaturnBackground />
 
-      <Navbar />
+      <Navbar navLinks={navbarItems} brandText={siteSettings.brandText} />
 
       {/* --- SOSIAL MEDIA MENGAMBANG (Sisi Kiri) --- */}
       <div className="hidden lg:flex fixed left-8 top-1/2 -translate-y-1/2 flex-col items-center gap-6 z-[9999]">
@@ -244,9 +250,22 @@ export default function Portfolio() {
           delay={0.4}
           className="flex gap-4 justify-center items-center relative z-10"
         >
-          <button className="px-8 py-3 bg-stone-900 dark:bg-amber-100 text-white dark:text-stone-900 font-semibold rounded-full hover:bg-black dark:hover:bg-white transition-colors duration-300 shadow-lg shadow-stone-400/50 dark:shadow-amber-900/50">
-            CONTACT ME
-          </button>
+          {contactButton?.href ? (
+            <a
+              href={contactButton.href}
+              target={contactButton?.openInNewTab ? "_blank" : "_self"}
+              rel={
+                contactButton?.openInNewTab ? "noopener noreferrer" : undefined
+              }
+              className="px-8 py-3 bg-stone-900 dark:bg-amber-100 text-white dark:text-stone-900 font-semibold rounded-full hover:bg-black dark:hover:bg-white transition-colors duration-300 shadow-lg shadow-stone-400/50 dark:shadow-amber-900/50"
+            >
+              {contactButton?.label || "CONTACT ME"}
+            </a>
+          ) : (
+            <button className="px-8 py-3 bg-stone-900 dark:bg-amber-100 text-white dark:text-stone-900 font-semibold rounded-full hover:bg-black dark:hover:bg-white transition-colors duration-300 shadow-lg shadow-stone-400/50 dark:shadow-amber-900/50">
+              {contactButton?.label || "CONTACT ME"}
+            </button>
+          )}
           <button
             onClick={handleNextSlide}
             className="p-3 bg-white/80 dark:bg-stone-800/80 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-full hover:border-amber-400 dark:hover:border-amber-500 transition-all duration-300 group shadow-sm active:scale-95"
